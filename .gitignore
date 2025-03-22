@@ -1,0 +1,51 @@
+# Ignore system files
+.DS_Store
+Thumbs.db
+
+# Ignore Colab and Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+*.ipynb_checkpoints/
+
+# Ignore virtual environments
+venv/
+env/
+
+# Ignore Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore logs and debug files
+*.log
+logs/
+debug.log
+
+# Ignore datasets and large files
+data/
+*.csv
+*.tsv
+*.json
+*.xml
+*.h5
+*.npz
+
+# Ignore model checkpoints and weights
+*.pt
+*.pth
+*.h5
+*.ckpt
+checkpoints/
+models/
+weights/
+
+# Ignore TensorBoard logs
+runs/
+tb_logs/
+
+# Ignore Colab-generated files
+colab_ssh.log
+.metadata
+
+# Ignore GitHub_Sync notebook
+GitHub_Sync.ipynb
