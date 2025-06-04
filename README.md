@@ -1,7 +1,5 @@
-# 🌿 PlantVision
-
 <p align="center">
-  <img src="logo/logo.png" alt="PlantVision Banner" width="100%" height="600"/>
+  <img src="logo/logo.png" alt="PlantVision Banner" width="100%" height="450"/>
 </p>
 
 [![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
@@ -17,9 +15,7 @@
 [![Jupyter](https://img.shields.io/badge/Jupyter-F37626?style=flat-square&logo=jupyter&logoColor=white)](https://jupyter.org/)
 
 
----
-
-**PlantVision** is a deep learning–powered plant disease detection system built with Python and PyTorch. It leverages the EfficientNet-B2 architecture to classify 69 plant disease categories with high accuracy. Designed for offline mobile deployment, PlantVision aims to assist farmers, gardeners, and agricultural researchers in identifying plant diseases directly in the field.
+**🌿PlantVision** is a deep learning–powered plant disease detection system built with Python and PyTorch. It leverages a CNN architecture to classify 84 different kinds of plant diseases from 17 plants with a relatively high accuracy. Designed for offline mobile deployment, PlantVision aims to assist farmers, gardeners, and agricultural researchers in identifying plant diseases directly in the field.
 
 ---
 
@@ -28,18 +24,12 @@
 | Section                                 | Link                                                               |
 |-----------------------------------------|--------------------------------------------------------------------|
 | 🚀 Features                             | [Jump to Features](#-features)                                     |
-| 📂 Directory Structure                  | [Jump to Directory Structure](#-directory-structure)               |
 | 🛠️ Installation                         | [Jump to Installation](#️-installation)                             |
 | 📊 Dataset                              | [Jump to Dataset](#-dataset)                                       |
 | 🏋️‍♂️ Training                          | [Jump to Training](#️-training)                                    |
 | 📈 Evaluation                           | [Jump to Evaluation](#-evaluation)                                 |
 | 🖼️ Inference                            | [Jump to Inference](#-inference)                                   |
-| &nbsp;&nbsp;&nbsp;• Single-Image Inference | [Jump to Single-Image Inference](#single-image-inference)         |
-| &nbsp;&nbsp;&nbsp;• Batch Inference       | [Jump to Batch Inference](#batch-inference)                       |
 | 📱 Mobile Deployment                    | [Jump to Mobile Deployment](#-mobile-deployment)                   |
-| &nbsp;&nbsp;&nbsp;• Export to TorchScript  | [Jump to Export to TorchScript](#export-to-torchscript)           |
-| &nbsp;&nbsp;&nbsp;• Export to ONNX         | [Jump to Export to ONNX](#export-to-onnx)                         |
-| &nbsp;&nbsp;&nbsp;• Integration            | [Jump to Integration](#integration)                               |
 | 🤝 Contributing                         | [Jump to Contributing](#-contributing)                             |
 | 📄 License                              | [Jump to License](#-license)                                       |
 | 📬 Contact                              | [Jump to Contact](#-contact)                                       |
@@ -64,6 +54,4 @@
   Modular design allows easy customization and extension for additional plant species or diseases.
 
 ---
-
-## 📂 Directory Structure
 
