@@ -16,7 +16,9 @@
 [![Jupyter](https://img.shields.io/badge/Jupyter-F37626?style=flat-square&logo=jupyter&logoColor=white)](https://jupyter.org/)
 
 
-**🌿PlantVision** is a deeplearning-powered plant disease detection system built with Python and PyTorch. It leverages a CNN architecture to classify 84 different kinds of plant diseases from 17 plants with a relatively high accuracy. Designed for offline mobile deployment, PlantVision aims to assist farmers, gardeners, and agricultural researchers in identifying plant diseases directly in the field.
+**🌿PlantVision** is a deeplearning-powered plant disease detection system built with Python and PyTorch. It leverages a CNN architecture to classify 84 different kinds of plant diseases from 17 plants with a relatively high accuracy. Designed for offline mobile deployment, PlantVision aims to assist farmers, gardeners, and agricultural researchers in identifying plant diseases directly in the field. 
+
+📚You can find the full project documentation [here](https://muhumuzadeus.netlify.app/projects/plantvision-cv001dd)
 
 ---
 
