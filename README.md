@@ -1,6 +1,7 @@
 <p align="center">
-  <img src="logo/logo.png" alt="PlantVision Banner" style="width: 100%; height: auto; max-width: 800px;" />
+  <img src="logo/logo.png" alt="PlantVision Banner" style="max-height: 450px; width: 100%; height: auto;" />
 </p>
+
 
 [![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=flat-square&logo=pytorch&logoColor=white)](https://pytorch.org/)
