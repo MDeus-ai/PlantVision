@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="logo/logo.png" alt="PlantVision Banner" width="100%" height="450"/>
+  <img src="logo/logo.png" alt="PlantVision Banner" style="width: 100%; height: auto; max-width: 800px;" />
 </p>
 
 [![Python](https://img.shields.io/badge/Python-3776AB?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
