@@ -8,3 +8,7 @@ mlruns/
 *.tflite
 .env
 venv/
+.idea/
+build/
+dist/
+*.egg-info/

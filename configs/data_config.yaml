@@ -1,0 +1,6 @@
+data:
+  train_dir: processed # training data directory
+  # val_dir: data
+  batch_size: 32 # Batch size for the dataloaders
+  img_size: 24 # Image size to be fed into the model
+  loader_num_workers: 1 # Number of cpu cores to use for dataloaders

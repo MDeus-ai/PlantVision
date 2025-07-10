@@ -1,0 +1,13 @@
+README.md
+setup.py
+src/PlantVision/__init__.py
+src/PlantVision/evaluate.py
+src/PlantVision/train.py
+src/PlantVision/utils.py
+src/PlantVision.egg-info/PKG-INFO
+src/PlantVision.egg-info/SOURCES.txt
+src/PlantVision.egg-info/dependency_links.txt
+src/PlantVision.egg-info/top_level.txt
+src/PlantVision/data/__init__.py
+src/PlantVision/data/loader.py
+src/PlantVision/data/transforms.py
