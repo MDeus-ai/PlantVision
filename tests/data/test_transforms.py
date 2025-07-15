@@ -1,5 +1,6 @@
 import torch
 import torchvision
+import numpy as np
 from torchvision import transforms
 from PlantVision.data.transforms import get_transforms
 
@@ -22,11 +23,11 @@ def test_get_transforms_resizes_correctly():
     test_img_size = 64
 
     # A dummy tensor representing a 3-channel image of a different size
-    dummy_image = torch.randn(3, 100, 120) # (channels, height, width)
+    dummy_image_np = np.uint8(np.random.rand(100, 120, 3) * 255) # (channels, height, width)
 
     # ACT
     transform_pipeline = get_transforms(img_size=test_img_size)
-    transformed_image = transform_pipeline(dummy_image)
+    transformed_image = transform_pipeline(dummy_image_np)
 
     # ASSERT: The output should be a tensor
     assert isinstance(transformed_image, torch.Tensor), "Transformed output should be a torch.Tensor"
