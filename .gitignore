@@ -1,6 +1,6 @@
 __pycache__/
 *.pyc
-data/
+/data/
 outputs/
 mlruns/
 *.pt
@@ -12,3 +12,4 @@ venv/
 build/
 dist/
 *.egg-info/
+demo.md
