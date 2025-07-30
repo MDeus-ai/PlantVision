@@ -5,7 +5,7 @@ model:
   model_variation: 'b0'
 
   # Number of classes the PlantVision model is able to classify
-  num_classes: 84
+  num_classes: 38
 
   # Set to `true` to use the pre-trained ImageNet weights.
   # Set to `false` to train the model from scratch.

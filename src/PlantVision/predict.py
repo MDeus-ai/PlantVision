@@ -20,11 +20,17 @@ def predict(model_checkpoint: Path, image_path: Path, data_config_path: Path, cl
     """
 
     if not image_path.is_file():
-        print(f"Error: Image file not found at {image_path}")
+        print(f" ❌ Error: Image file not found at {image_path}")
         return
 
-    print("\n =====> PlantVision Prediction <=====")
-    print(f" 🖼️ Image: {image_path}")
+    # Draw a box around the PlantVision Prediction word
+    heading = "PlantVision Prediction"
+    box_width = len(heading) + 4
+    print("\n\n" + "┌" + "─" * box_width + "┐")
+    print("│  " + heading + "  │")
+    print("└" + "─" * box_width + "┘")
+
+    print(f"\n 🖼️ Image: {image_path}")
 
     # 1. Load Configurations and Class Names
     # Load data configurations
@@ -37,6 +43,7 @@ def predict(model_checkpoint: Path, image_path: Path, data_config_path: Path, cl
     temp_dataset = datasets.ImageFolder(class_data_dir)
     class_names = temp_dataset.classes
 
+    # Where to carry out inference from GPU/CPU
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f" 💡 Using device: {device}")
 

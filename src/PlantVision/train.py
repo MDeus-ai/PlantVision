@@ -23,7 +23,7 @@ def main():
     """Main training script orchestration."""
 
     # Configuration Loading
-    print("\n 🚀 Loading configurations...")
+    print("\n\n 🚀 Loading configurations...")
     data_config = load_config(paths.CONFIG_DIR / "data_config.yaml")
     model_config = load_config(paths.CONFIG_DIR / "model_config.yaml")
     train_config = load_config(paths.CONFIG_DIR / "train_config.yaml")
@@ -37,7 +37,7 @@ def main():
     )
 
     train_loader = get_dataloader(
-        data_path=paths.DATA_DIR / data_config['data']['train_dir'],
+        data_path=paths.DATA_DIR / data_config['data']['train_dir'], # Path to the training dataset
         batch_size=data_config['data']['batch_size'],
         num_workers=data_config['data']['loader_num_workers'],
         shuffle=data_config['data'].get('shuffle', True),

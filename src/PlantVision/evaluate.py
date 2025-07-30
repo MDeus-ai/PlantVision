@@ -1,5 +1,6 @@
 import torch
 import yaml
+import tqdm
 import argparse
 from pathlib import Path
 import pandas as pd
@@ -12,13 +13,7 @@ from PlantVision.data.loader import get_dataloader
 from PlantVision.data.transforms import get_transforms
 
 # To run the evaluate.py script
-# COMMANDS
-
-# # Run with default paths
-# python -m PlantVision.evaluate
 #
-# # Or specify a different model and dataset
-# python -m PlantVision.evaluate --model-checkpoint "mlruns/0/.../artifacts/model/model.pth" --data-path "data/processed/test"
 
 # A helper function to open and read config files
 def load_config(config_path):
@@ -42,19 +37,19 @@ def evaluate(model_checkpoint: Path, data_path: Path, data_config_path: Path):
         data_path (Path): Path to the validation/test data directory
         data_config_path (Path): Path to the main data configuration file
     """
-    print("Starting Evaluation...\n")
+    print("\n\n Starting Evaluation...\n")
 
     # 1. Load Configurations
-    print(f"Loading data config from: {data_config_path}")
+    print(f" 🚀 Loading data config from: {data_config_path}")
     # Reads from the data_config.yaml file
     data_config = load_config(data_config_path)['data']
 
     # Selects a device onto which to perform the evaluation, GPU/CPU
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    print(f"Using device: {device}\n")
+    print(f" 💡 Using device: {device}\n")
 
     # 2. Prepare Dataset and DataLoader
-    print("Preparing validation dataloader...\n")
+    # print("Preparing validation dataloader...\n")
     img_size = data_config['img_size']
     batch_size = data_config['batch_size']
     mean = data_config['mean']
@@ -79,18 +74,18 @@ def evaluate(model_checkpoint: Path, data_path: Path, data_config_path: Path):
     )
 
     # 3. Load the model & state dictionary
-    print(f"Loading model checkpoint from: {model_checkpoint}")
+    print(f" 🔁 Loading model checkpoint from: {model_checkpoint}")
     model = torch.load(model_checkpoint, map_location=device, weights_only=False)
     model.to(device)
     model.eval() # Set to evaluation mode
 
     # 4. Run Inference and Collect Predictions
-    print("Running inference on the dataset...\n")
     all_preds = []
     all_labels = []
 
     with torch.no_grad():
-        for images, labels in val_loader:
+        progress_bar = tqdm.tqdm(val_loader, desc=" 🧠 Evaluating")
+        for images, labels in progress_bar:
             images = images.to(device)
             labels = labels.to(device)
 
@@ -101,11 +96,16 @@ def evaluate(model_checkpoint: Path, data_path: Path, data_config_path: Path):
             all_labels.extend(labels.cpu().numpy())
 
     # 5. Calculate and Display Metrics
-    print("\n ======> Evaluation Results <======")
+    # Draw a box around the PlantVision Prediction word
+    title = "Evaluation Results"
+    box_width = len(title) + 4
+    print("\n\n" + "┌" + "─" * box_width + "┐")
+    print("│  " + title + "  │")
+    print("└" + "─" * box_width + "┘")
 
     # Classification Report (Precision, Recall, F1-Score)
     report = classification_report(all_labels, all_preds, target_names=class_names, digits=4, zero_division=0)
-    print("Classification Report:")
+    print("\n Classification Report:")
     print(report)
 
     # Save the report to a file
@@ -113,10 +113,10 @@ def evaluate(model_checkpoint: Path, data_path: Path, data_config_path: Path):
     report_path.parent.mkdir(exist_ok=True)
     with open(report_path, 'w') as f:
         f.write(report)
-    print(f"Classification report saved to {report_path}")
+    print(f" Classification report saved to {report_path}")
 
     # Confusion Matrix
-    print("\nGenerating confusion matrix...")
+    print("\n Generating confusion matrix...")
     cm = confusion_matrix(all_labels, all_preds)
     cm_df = pd.DataFrame(cm, index=class_names, columns=class_names)
 
@@ -129,8 +129,8 @@ def evaluate(model_checkpoint: Path, data_path: Path, data_config_path: Path):
     # Save the confusion matrix plot
     cm_path = paths.PROJECT_ROOT / "outputs" / "confusion_matrix.png"
     plt.savefig(cm_path)
-    print(f"Confusion matrix plot saved to {cm_path}")
-    print("\n=====> Evaluation Finished <=====")
+    print(f" Confusion matrix plot saved to {cm_path}")
+    print("\n Evaluation Finished.")
 
 
 if __name__ == "__main__":
@@ -146,7 +146,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--data-path",
         type=str,
-        default="data/processed/val", # Default path to a validation set
+        default=None,
         help="Path to the validation/test dataset directory."
     )
     parser.add_argument(
@@ -164,9 +164,17 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    config_path = paths.PROJECT_ROOT / args.data_config_path
+
+    if args.data_path is None:
+        data_config = load_config(config_path)
+        final_data_path = paths.DATA_DIR / data_config['data']['val_dir']
+    else:
+        final_data_path = paths.PROJECT_ROOT / args.data_path
+
     # Construct absolute paths from the project root
     model_path = paths.PROJECT_ROOT / args.model_checkpoint
-    data_path = paths.PROJECT_ROOT / args.data_path
+    data_path = final_data_path
     data_config_path = paths.PROJECT_ROOT / args.data_config_path
 
     evaluate(
