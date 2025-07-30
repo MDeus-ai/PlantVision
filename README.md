@@ -2,7 +2,7 @@
   <img src="logo/logo.png" alt="PlantVision Banner" style="max-height: 450px; width: 100%; height: auto;" />
 </p>
 
-<h1 align="center">PlantVision - Disease Detection</h1>
+<h1 align="center">Disease Detection</h1>
 
 <p align="center">
   <strong>Identify plant diseases in a snap with state-of-the-art AI.</strong><br/>
@@ -40,7 +40,7 @@ helping to secure food resources and support sustainable agriculture.
 | Section              | Link                                             |
 |----------------------|--------------------------------------------------|
 | ✨ Features           | [Jump to Features](#-features)                   
-| 💡 Tech Stack        | [Jump to Tech Stack](#-Tech Stack)               
+| 💡 Tech Stack        | [Jump to Tech Stack](#-Tech-Stack)               
 | 🚀 Installation      | [Jump to Installation](#️-installation)          |
 | ⚙️ Usage             | [Jump to Usage](#-Usage)                         
 | 🛠️ Model Details    | [Jump to Model Details](#-dataset)               |
@@ -90,6 +90,7 @@ Follow these instructions to get the API running on your local machine.
     ```bash
     git clone https://github.com/MDeus-ai/PlantVision.git
     cd PlantVision
+    pip install -e .
     ```
 
 2.  **Create and activate a virtual environment:**

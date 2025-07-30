@@ -1,6 +1,24 @@
 data:
-  train_dir: processed # training data directory
+  # training data directory
+  train_dir: processed
+
   # val_dir: data
-  batch_size: 32 # Batch size for the dataloaders
-  img_size: 24 # Image size to be fed into the model
-  loader_num_workers: 1 # Number of cpu cores to use for dataloaders
+
+  # Batch size for the dataloaders
+  batch_size: 32
+
+  # Image size to be fed into the model
+  img_size: 24
+
+  # Shuffle the training images during training
+  shuffle: true
+
+  # Drop the last batch if total num of training images is not perfectly divisible by batch size
+  drop_last: true
+
+  # Image mean and standard deviation (std) across RGB channels for normalization
+  mean: [0.485, 0.456, 0.406]
+  std: [0.229, 0.224, 0.225]
+
+  # Number of cpu cores to use for dataloaders
+  loader_num_workers: 1

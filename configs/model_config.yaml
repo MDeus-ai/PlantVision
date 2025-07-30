@@ -1,2 +1,17 @@
 model:
+
+  # The variant of the EfficientNet Model
+  # Supported models: 'b0', 'b1', 'b2', 'b3'
   model_variation: 'b0'
+
+  # Number of classes the PlantVision model is able to classify
+  num_classes: 84
+
+  # Set to `true` to use the pre-trained ImageNet weights.
+  # Set to `false` to train the model from scratch.
+  pretrained: true
+  
+  # Set to `true` to freeze the convolutional feature extractor layers.
+  # Only the final classifier head will be trained.
+  # Set to `false` to fine-tune the entire network.
+  freeze_layers: true

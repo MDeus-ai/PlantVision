@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: PlantVision CI Pipeline
 
 # 1. Trigger: When does this workflow run?
 on:

@@ -10,5 +10,6 @@ setup(
     author='Muhumuza Deus.M.',
     description='A project that leverages a deep-learning vision model to help '
                 'farmers and agricultural specialists identify plant diseases '
-                'quickly and accurately.'
+                'quickly and accurately.',
+    license='MIT'
 )

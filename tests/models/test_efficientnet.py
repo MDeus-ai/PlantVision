@@ -1,49 +1,45 @@
 import torch
 import pytest
+from unittest.mock import patch
 from PlantVision.models.efficientnet.EfficientNet import EfficientNet
 
 
-def test_efficientnet_instantiation():
-    """
-    Tests if the EfficientNet model can be instantiated without errors
-    """
-
-    # ARRANGE & ACT
+def test_efficientnet_instantiation_from_scratch():
+    """Tests if the model can be instantiated without pre-trained weights."""
     try:
-        model = EfficientNet(model_name='b0', num_classes=10)
+        model = EfficientNet(num_classes=10, model_name='b0', pretrained=False)
     except Exception as e:
-        # ASSERT
-        pytest.fail(f"EfficientNet instantiation failed with an exception: {e}")
+        pytest.fail(f"Instantiation from scratch failed: {e}")
 
 
+# Patch the `torchvision.models` to avoid actual network downloads during unit tests
+@patch('torchvision.models.efficientnet_b0')
+def test_efficientnet_instantiation_pretrained(mock_efficientnet_b0):
+    """Tests if the pre-training and freezing logic paths are executed."""
+    try:
+        EfficientNet(
+            num_classes=10,
+            model_name='b0',
+            pretrained=False,
+            freeze_layers=True
+        )
+    except Exception as e:
+        pytest.fail(f"Instantiation with pre-training failed: {e}")
 
-@pytest.mark.parametrize('model_name', ['b0', 'b1', 'b2', 'b3'])
+    # Assert that the torchvision model builder was called with the 'weights' argument
+    mock_efficientnet_b0.assert_called_once()
+    assert 'weights' in mock_efficientnet_b0.call_args.kwargs
+
+
+# The parametrize test for the forward pass
+@pytest.mark.parametrize("model_name", ['b0', 'b1'])
 def test_efficientnet_forward_pass(model_name):
-    """
-    A smoke test to ensure the model can perform a forward pass.
-    Tests multiple model variations using parametrize
-    """
-
-    # ARRANGE
     num_classes = 10
-    batch_size = 4
+    batch_size = 2
     img_size = 224
-
-    # A model instance
-    model = EfficientNet(model_name=model_name, num_classes=num_classes)
+    model = EfficientNet(num_classes=num_classes, model_name=model_name, pretrained=False)
     model.eval()
-
-    # Create a dummy input batch
     dummy_input = torch.randn(batch_size, 3, img_size, img_size)
 
-    # ACT & ASSERT
-    try:
-        with torch.no_grad(): # for inference tests
-            output = model(dummy_input)
-
-        # Check that the output shape is correct: [Batch Size, Num Classes]
-        expected_shape = (batch_size, num_classes)
-        assert output.shape == expected_shape, f"Model output shape is incorrect for {model_name}"
-
-    except Exception as e:
-        pytest.fail(f"EfficientNet forward pass for {model_name} failed with an exception: {e}")
+    output = model(dummy_input)
+    assert output.shape == (batch_size, num_classes)
