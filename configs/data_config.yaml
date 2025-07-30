@@ -2,7 +2,7 @@ data:
   # training data directory
   train_dir: "processed/train"
 
-  val_dir: "processed/train"
+  val_dir: "processed/val"
 
   # Batch size for the dataloaders
   batch_size: 32

@@ -4,6 +4,7 @@ import torch
 import mlflow.pytorch
 import torch.nn as nn
 from src import paths
+
 from PlantVision.data.transforms import get_transforms
 from PlantVision.data.loader import get_dataloader
 from PlantVision.models.efficientnet.EfficientNet import EfficientNet

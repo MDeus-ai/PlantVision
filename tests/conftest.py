@@ -18,9 +18,18 @@ def dummy_evaluation_project(tmp_path_factory):
     │       ├── class_a/
     │       │    ├── 1.png
     │       │    └── 2.png
-    │       └── class_b/
-    │            ├── 3.png
-    │            └── 4.png
+    │       ├── class_b
+    │       │    ├── 3.png
+    │       │    └── 4.png
+    │       ├── class_c
+    │       │    ├── 5.png
+    │       │    └── 6.png
+    │       ├── class_d
+    │       │    ├── 7.png
+    │       │    └── 8.png
+    │       └── class_e
+    │            ├── 9.png
+    │            └── 10.png
     ├── outputs/
     │   └── test_model.pth
     └── configs/
@@ -38,17 +47,29 @@ def dummy_evaluation_project(tmp_path_factory):
     data_dir.mkdir(parents=True)
     (data_dir / "class_a").mkdir()
     (data_dir / "class_b").mkdir()
+    (data_dir / "class_c").mkdir()
+    (data_dir / "class_d").mkdir()
+    (data_dir / "class_e").mkdir()
+
+
     # Create a dummy image for each class and save them in their respective class folders
     Image.fromarray(np.uint8(np.zeros((10, 10, 3)))).save(data_dir / "class_a" / "1.png")
     Image.fromarray(np.uint8(np.ones((10, 10, 3)))).save(data_dir / "class_a" / "2.png")
     Image.fromarray(np.uint8(np.zeros((10, 10, 3)))).save(data_dir / "class_b" / "3.png")
     Image.fromarray(np.uint8(np.ones((10, 10, 3)))).save(data_dir / "class_b" / "4.png")
+    Image.fromarray(np.uint8(np.zeros((10, 10, 3)))).save(data_dir / "class_c" / "5.png")
+    Image.fromarray(np.uint8(np.ones((10, 10, 3)))).save(data_dir / "class_c" / "6.png")
+    Image.fromarray(np.uint8(np.zeros((10, 10, 3)))).save(data_dir / "class_d" / "7.png")
+    Image.fromarray(np.uint8(np.ones((10, 10, 3)))).save(data_dir / "class_d" / "8.png")
+    Image.fromarray(np.uint8(np.ones((10, 10, 3)))).save(data_dir / "class_e" / "9.png")
+    Image.fromarray(np.uint8(np.ones((10, 10, 3)))).save(data_dir / "class_e" / "10.png")
+
 
     # 2. Create a fake model checkpoint
     outputs_dir = base_dir / "outputs"
     outputs_dir.mkdir()
     model = EfficientNet(
-        num_classes=2,
+        num_classes=5,
         model_name='b0',
         pretrained=False,
         freeze_layers=False
@@ -83,7 +104,7 @@ def dummy_evaluation_project(tmp_path_factory):
     model_config_data = {
         'model':
             {'model_variation': 'b0',
-             'num_classes': 2,
+             'num_classes': 5,
              'pretrained': False
              }
     }
