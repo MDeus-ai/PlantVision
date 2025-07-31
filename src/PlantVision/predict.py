@@ -1,14 +1,32 @@
+import json
 import torch
 import yaml
 import argparse
 from pathlib import Path
 from PIL import Image
-import torchvision.datasets as datasets
 
 from src import paths
 from PlantVision.data.transforms import get_transforms
 
-def predict(model_checkpoint: Path, image_path: Path, data_config_path: Path, class_names_path: Path, verbose: bool = False):
+# To use predict to make inference on an image anywhere on the computer:
+#   0. Open the PlantVision project from the terminal
+#   1. Activate PlantVision project environment by running: venv\Scripts\activate
+#   2. Command to make a prediction: python -m PlantVision.predict --image "path/to/image.png" --model-checkpoint "/outputs/best_model.pth"
+
+# Flags:
+#   --image: Path to any image on the computer
+#   --model-checkpoint : Path to the trained model .pth file (defaults to /outputs/best_model.pth)
+#   --verbose or -v : Print out more details about the model's predictions.
+
+# For more check out the documentation https://github.com/MDeus-ai/PlantVision
+
+
+
+def load_config(config_path):
+    with open(config_path, 'r') as f:
+        return yaml.safe_load(f)
+
+def predict(model_checkpoint: Path, image_path: Path, verbose: bool = False):
     """
     Runs inference on a single image using a trained model checkpoint
     Optionally displays the top-10 most likely predictions for each image in verbose mode
@@ -16,8 +34,6 @@ def predict(model_checkpoint: Path, image_path: Path, data_config_path: Path, cl
     Args:
         model_checkpoint (Path): Path to the saved .pth model checkpoint
         image_path (Path): Path to the single image file for prediction
-        data_config_path (Path): Path to the data configuration file to get img_size
-        class_names_path (Path): Path to the JSON file containing class names
         verbose (bool, optional): If True, prints out dense inference results
     """
 
@@ -34,18 +50,32 @@ def predict(model_checkpoint: Path, image_path: Path, data_config_path: Path, cl
 
     print("\n" + "\t"*5 + f"🖼️ Image: {image_path}")
 
-    # 1. Load Configurations and Class Names
+    # 1. Load Configurations
+    data_config = load_config(paths.CONFIG_DIR / "data_config.yaml")["data"]
+    model_config = load_config(paths.CONFIG_DIR / "model_config.yaml")["model"]
+
     # Load data configurations
-    data_config = yaml.safe_load(data_config_path.read_text())["data"]
     img_size = data_config["img_size"]
     mean = data_config["mean"]
     std = data_config["std"]
 
-    # Infer class names from the training directory structure
-    temp_dataset = datasets.ImageFolder(class_data_dir)
-    class_names = temp_dataset.classes
+    # Load class names from the class_names.json file
+    class_names_path = paths.PROJECT_ROOT / "outputs" / "class_names.json"
+    with open(class_names_path, "r") as f:
+        class_names = json.load(f)
+    num_classes = len(class_names)
 
-    # Where to carry out inference from GPU/CPU
+    # Raise an exception if the num of classes in config doesn't...
+    # match those in the class_names.json file
+    model_num_classes = model_config["num_classes"]
+    with open(class_names_path, "r") as f:
+        class_names = json.load(f)
+    assert num_classes == model_num_classes, \
+        (f"class_names.json has {len(class_names)} classes but "
+         f"num_classes in model_config.yaml has {model_num_classes} classes")
+
+
+    # Where to carry out inference from, GPU/CPU
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print("\n" + "\t"*5 + f"💡 Using device: {device}")
 
@@ -108,7 +138,7 @@ if __name__ == "__main__":
         "--image",
         type=str,
         required=True,
-        help="Path to the input image file."
+        help="Path to the input image file from anywhere on the computer."
     )
     parser.add_argument(
         "--model-checkpoint",
@@ -117,45 +147,19 @@ if __name__ == "__main__":
         help="Path to the trained model .pth file, relative to project root."
     )
     parser.add_argument(
-        "--class-data-dir",
-        type=str,
-        default="data/processed/train",  # The directory used to get class names
-        help="Path to the training data directory to infer class names, relative to project root."
-    )
-    parser.add_argument(
-        "--data-config-path",
-        type=str,
-        default="configs/data_config.yaml",
-        help="Path to the data configuration YAML file, relative to project root."
-    )
-
-    parser.add_argument(
         "-v", "--verbose",
         action="store_true",
-        help="Print out more information about model predictions."
+        help="Print out more details about the model's predictions."
     )
     args = parser.parse_args()
 
     # Construct absolute paths using our reliable paths.py module
     model_path = paths.PROJECT_ROOT / args.model_checkpoint
     image_path = Path(args.image).resolve()  # Use resolve for user-provided paths
-    class_data_path = paths.PROJECT_ROOT / args.class_data_dir
     data_config_path = paths.PROJECT_ROOT / args.data_config_path
 
     predict(
         model_checkpoint=model_path,
         image_path=image_path,
-        data_config_path=data_config_path,
-        class_data_dir=class_data_path,
         verbose=args.verbose,
     )
-
-    # COMMANDS
-    # # Example using a relative path to an image in an "assets" folder
-    # python -m PlantVision.predict --image "D:\OTHERS\ME\me.jpg"
-
-    # # Example using an absolute path to an image on your Desktop
-    # python -m PlantVision.predict --image "C:/Users/YourUser/Desktop/test_plant.png"
-
-    # # Example specifying a different model checkpoint
-    # python -m PlantVision.predict --image "assets/sample_leaf.jpg" --model-checkpoint "mlruns/0/some_run_id/artifacts/model/model.pth"
