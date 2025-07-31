@@ -1,10 +1,12 @@
 import yaml
+import json
 import tqdm
 import torch
 import mlflow.pytorch
 import torch.nn as nn
-from src import paths
+import torchvision.datasets as datasets
 
+from src import paths
 from PlantVision.data.transforms import get_transforms
 from PlantVision.data.loader import get_dataloader
 from PlantVision.models.efficientnet.EfficientNet import EfficientNet
@@ -29,6 +31,9 @@ def main():
     model_config = load_config(paths.CONFIG_DIR / "model_config.yaml")
     train_config = load_config(paths.CONFIG_DIR / "train_config.yaml")
 
+    # Path to the training dataset
+    train_data_path = paths.DATA_DIR / data_config['data']['train_dir']
+
     # Data Preparation
     print(" 📝 Preparing data...")
     train_transforms = get_transforms(
@@ -37,8 +42,30 @@ def main():
         std=data_config['data']['std']
     )
 
+    # Temporary dataset instance to extract class names
+    print(" ⛏️ Extracting class names from training data...")
+    temp_dataset = datasets.ImageFolder(train_data_path)
+    class_names = temp_dataset.classes
+
+    # Write the list of class names to the JSON file
+    class_names_path = paths.PROJECT_ROOT / "outputs" / "class_names.json"
+    class_names_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(class_names_path, "w") as f:
+        json.dump(class_names, f, indent=4)
+    print(f" ⛏️ Saved {len(class_names)} class names to {class_names_path}")
+
+    # Raise an exception if the num of classes in config doesn't...
+    # match those in the class_names.json file
+    model_num_classes = model_config['model']['num_classes']
+    with open(class_names_path, "r") as f:
+        class_names = json.load(f)
+    assert len(class_names) == model_num_classes, \
+        (f"class_names.json has {len(class_names)} classes but "
+         f"num_classes in model_config.yaml has {model_num_classes} classes")
+
+
     train_loader = get_dataloader(
-        data_path=paths.DATA_DIR / data_config['data']['train_dir'], # Path to the training dataset
+        data_path=train_data_path, # Path to the training dataset
         batch_size=data_config['data']['batch_size'],
         num_workers=data_config['data']['loader_num_workers'],
         shuffle=data_config['data'].get('shuffle', True),
@@ -79,6 +106,7 @@ def main():
         mlflow.log_params(data_config['data'])
         mlflow.log_params(model_config['model'])
         mlflow.log_params(train_config['train'])
+        mlflow.log_artifact(str(class_names_path), "class_names")
 
         print('\n ⚙️ Starting model training...')
         num_epochs = train_config['train']['num_epochs']
