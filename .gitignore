@@ -1,7 +1,9 @@
 __pycache__/
 *.pyc
 /data/
-outputs/
+*.pth
+outputs/classification_report.txt
+outputs/confusion_matrix.png
 mlruns/
 *.pt
 *.onnx
