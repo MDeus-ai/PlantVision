@@ -2,27 +2,27 @@ import torch
 import yaml
 import tqdm
 import argparse
+import json
 from pathlib import Path
 import pandas as pd
 from sklearn.metrics import classification_report, confusion_matrix
 import seaborn as sns
 import matplotlib.pyplot as plt
-import torchvision.datasets as datasets
 
 from src import paths
 from PlantVision.data.loader import get_dataloader
 from PlantVision.data.transforms import get_transforms
 
 # To run the evaluate.py script:
-#   0. Open the project from the terminal
+#   0. Open the PlantVision project from the terminal
 #   1. Activate PlantVision project environment by running: venv\Scripts\activate
 #   2. Run a sample evaluation command: python -m PlantVision.evaluate --model-checkpoint "outputs/best_model.pth" --data-path "data/processed/val"
 
 # Flags:
 #   --model-checkpoint : Path to the trained model .pth file (defaults to /outputs/best_model.pth)
-#   --data-path : Path to the validation or test dataset directory
+#   --data-path : Path to the validation or test dataset directory in the project
 #   --data-config-path : Path to the data configuration YAML file (defaults to /configs/data_config.yaml)
-#   --model-config-path : Path to the data configuration YAML file (defaults to /configs/model_config.yaml)
+#   --model-config-path : Path to the model configuration YAML file (defaults to /configs/model_config.yaml)
 
 # For more check out the documentation https://github.com/MDeus-ai/PlantVision
 
@@ -64,16 +64,30 @@ def evaluate(model_checkpoint: Path, data_path: Path, data_config_path: Path):
     # print("Preparing validation dataloader...\n")
     img_size = data_config['img_size']
     batch_size = data_config['batch_size']
-    mean = data_config['mean']
-    std = data_config['std']
+    mean = data_config.get('mean')
+    std = data_config.get('std')
 
 
     # Use the same transforms as validation/training
     val_transforms = get_transforms(img_size=img_size, mean=mean, std=std)
 
-    # Create a temporary dataset to get class names, then the dataloader
-    temp_dataset = datasets.ImageFolder(data_path)
-    class_names = temp_dataset.classes
+    # Load class names from the class_names.json file
+    model_config = load_config(paths.CONFIG_DIR / "model_config.yaml")
+    class_names_path = paths.PROJECT_ROOT / "outputs" / "class_names.json"
+    print(f"📑 Loading class names from: {class_names_path}")
+    with open(class_names_path, 'r') as f:
+        class_names = json.load(f)
+    num_classes = len(class_names)
+    print(f"📑 Found {num_classes} classes")
+
+    # Raise an exception if the num of classes in config doesn't...
+    # match those in the class_names.json file
+    model_num_classes = model_config['model']['num_classes']
+    with open(class_names_path, "r") as f:
+        class_names = json.load(f)
+    assert len(class_names) == model_num_classes, \
+        (f"class_names.json has {len(class_names)} classes but "
+         f"num_classes in model_config.yaml has {model_num_classes} classes")
 
     # Validation dataloader
     val_loader = get_dataloader(
@@ -85,7 +99,7 @@ def evaluate(model_checkpoint: Path, data_path: Path, data_config_path: Path):
         drop_last=False,
     )
 
-    # 3. Load the model & state dictionary
+    # 3. Load the model & state dictionary (weights)
     print(f"🔁 Loading model checkpoint from: {model_checkpoint}")
     model = torch.load(model_checkpoint, map_location=device, weights_only=False)
     model.to(device)
@@ -133,13 +147,13 @@ def evaluate(model_checkpoint: Path, data_path: Path, data_config_path: Path):
 
     title = "Evaluation Results"
     box_width = len(title) + 4
-    print("\n"*3 + "\t"*5 + "┌" + "─" * box_width + "┐")
-    print("\t"*5 + "│  " + title + "  │")
-    print("\t"*5 + "└" + "─" * box_width + "┘")
+    print("\n"*3 + "\t"*7 + "┌" + "─" * box_width + "┐")
+    print("\t"*7 + "│  " + title + "  │")
+    print("\t"*7 + "└" + "─" * box_width + "┘")
 
     # Classification Report (Precision, Recall, F1-Score)
     report = classification_report(all_labels, all_preds_top1, target_names=class_names, digits=4, zero_division=0)
-    print("\n\n" + "\t"*5 + " Classification Report (Top-1):\n")
+    print("\n\n" + "\t"*7 + " Classification Report (Top-1):\n")
     print(report)
 
     # Display Top-1, Top-2 and Top-5 Accuracies
