@@ -2,6 +2,7 @@
 import pytest
 import yaml
 import torch
+import json
 import numpy as np
 from PIL import Image
 from PlantVision.models.efficientnet.EfficientNet import EfficientNet
@@ -31,7 +32,8 @@ def dummy_evaluation_project(tmp_path_factory):
     │            ├── 9.png
     │            └── 10.png
     ├── outputs/
-    │   └── test_model.pth
+        ├── class_names.json
+    │   └── best_model.pth
     └── configs/
         ├── data_config.yaml
         ├── model_config.yaml
@@ -74,9 +76,15 @@ def dummy_evaluation_project(tmp_path_factory):
         pretrained=False,
         freeze_layers=False
     )
-    model_path = outputs_dir / "test_model.pth"
-    # torch.save(model.state_dict(), model_path) # Save model state
+    model_path = outputs_dir / "best_model.pth"
     torch.save(model, model_path) # Save model state
+
+    # Create a fake class_names.json
+    class_names_path = outputs_dir / "class_names.json"
+    class_names = sorted([d.name for d in data_dir.iterdir() if d.is_dir()])
+    with open(class_names_path, "w") as f:
+        json.dump(class_names, f, indent=4)
+
     # 3. Create config files
     config_dir = base_dir / "configs"
     config_dir.mkdir()
@@ -125,8 +133,10 @@ def dummy_evaluation_project(tmp_path_factory):
     return {
         "project_root": base_dir,
         "model_path": model_path,
+        "config_dir": config_dir,
         "data_path": data_dir,
         "data_config_path": data_config_path,
         "model_config_path": model_config_path,
         "train_config_path": train_config_path,
+        "class_names_path": class_names_path,
     }
