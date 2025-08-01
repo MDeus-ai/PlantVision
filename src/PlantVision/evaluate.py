@@ -21,7 +21,6 @@ from PlantVision.data.transforms import get_transforms
 # Flags:
 #   --model-checkpoint : Path to the trained model .pth file (defaults to /outputs/best_model.pth)
 #   --data-path : Path to the validation or test dataset directory in the project
-#   --data-config-path : Path to the data configuration YAML file (defaults to /configs/data_config.yaml)
 
 # For more check out the documentation https://github.com/MDeus-ai/PlantVision
 
@@ -46,12 +45,10 @@ def evaluate(model_checkpoint: Path, data_path: Path):
     Args:
         model_checkpoint (Path): Path to the saved .pth model checkpoint
         data_path (Path): Path to the validation/test data directory
-        data_config_path (Path): Path to the main data configuration file
     """
     print("\n"*3 + " Starting Evaluation...\n")
 
     # 1. Load Configurations
-    print(f"🚀 Loading data config from: {data_config_path}")
     # Reads from the data_config.yaml file
     data_config = load_config(paths.CONFIG_DIR / "data_config.yaml")['data']
 
@@ -209,10 +206,8 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    config_path = paths.PROJECT_ROOT / args.data_config_path
-
     if args.data_path is None:
-        data_config = load_config(config_path)
+        data_config = load_config(paths.CONFIG_DIR / "data_config.yaml")
         final_data_path = paths.DATA_DIR / data_config['data']['val_dir']
     else:
         final_data_path = paths.PROJECT_ROOT / args.data_path
@@ -220,7 +215,6 @@ if __name__ == "__main__":
     # Construct absolute paths from the project root
     model_path = paths.PROJECT_ROOT / args.model_checkpoint
     data_path = final_data_path
-    data_config_path = paths.PROJECT_ROOT / args.data_config_path
 
     evaluate(
         model_checkpoint=model_path,
