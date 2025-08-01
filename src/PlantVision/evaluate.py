@@ -22,7 +22,6 @@ from PlantVision.data.transforms import get_transforms
 #   --model-checkpoint : Path to the trained model .pth file (defaults to /outputs/best_model.pth)
 #   --data-path : Path to the validation or test dataset directory in the project
 #   --data-config-path : Path to the data configuration YAML file (defaults to /configs/data_config.yaml)
-#   --model-config-path : Path to the model configuration YAML file (defaults to /configs/model_config.yaml)
 
 # For more check out the documentation https://github.com/MDeus-ai/PlantVision
 
@@ -33,7 +32,7 @@ def load_config(config_path):
         return yaml.safe_load(f)
 
 
-def evaluate(model_checkpoint: Path, data_path: Path, data_config_path: Path):
+def evaluate(model_checkpoint: Path, data_path: Path):
     """
     Evaluates a trained model checkpoint on a given dataset
 
@@ -54,7 +53,7 @@ def evaluate(model_checkpoint: Path, data_path: Path, data_config_path: Path):
     # 1. Load Configurations
     print(f"🚀 Loading data config from: {data_config_path}")
     # Reads from the data_config.yaml file
-    data_config = load_config(data_config_path)['data']
+    data_config = load_config(paths.CONFIG_DIR / "data_config.yaml")['data']
 
     # Selects a device onto which to perform the evaluation, GPU/CPU
     device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -207,18 +206,6 @@ if __name__ == "__main__":
         default=None,
         help="Path to the validation or test dataset directory."
     )
-    parser.add_argument(
-        "--data-config-path",
-        type=str,
-        default="configs/data_config.yaml",
-        help="Path to the data configuration YAML file."
-    )
-    parser.add_argument(
-        "--model-config-path",
-        type=str,
-        default="configs/model_config.yaml",
-        help="Path to the model configuration YAML file."
-    )
 
     args = parser.parse_args()
 
@@ -238,5 +225,4 @@ if __name__ == "__main__":
     evaluate(
         model_checkpoint=model_path,
         data_path=data_path,
-        data_config_path=data_config_path,
     )
