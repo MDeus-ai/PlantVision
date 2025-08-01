@@ -153,7 +153,7 @@ def evaluate(model_checkpoint: Path, data_path: Path):
     print(report)
 
     # Display Top-1, Top-2 and Top-5 Accuracies
-    print("\t"*5 + "="*50)
+    print("\t"*5 + "="*51)
     print("\t"*5 + f"🎯 Top-1 Accuracy: {top1_accuracy:.2f}%")
     print("\t"*5 + f"📈 Top-2 Accuracy: {top2_accuracy:.2f}%")
     print("\t"*5 + f"📉 Top-5 Accuracy: {top5_accuracy:.2f}%")
