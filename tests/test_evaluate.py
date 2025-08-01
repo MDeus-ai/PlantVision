@@ -15,7 +15,6 @@ def test_evaluate_script_runs_and_creates_outputs(monkeypatch, dummy_evaluation_
     project_root = dummy_evaluation_project["project_root"]
     model_path = dummy_evaluation_project["model_path"]
     data_path = dummy_evaluation_project["data_path"]
-    data_config_path = dummy_evaluation_project["data_config_path"]
     config_dir = dummy_evaluation_project["config_dir"]
 
     # Use monkeypatch to temporarily change the project's directories
@@ -34,7 +33,6 @@ def test_evaluate_script_runs_and_creates_outputs(monkeypatch, dummy_evaluation_
         evaluate.evaluate(
             model_checkpoint=model_path,
             data_path=data_path,
-            data_config_path=data_config_path,
         )
 
     # ASSERT
