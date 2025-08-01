@@ -163,5 +163,5 @@ Some commands have more flags associated with them, that modify the way the syst
 - **Model Architecture:** EfficientNetB3, pre-trained on ImageNet and fine-tuned for this task.
 - **Dataset:** The model was trained on the [link to datasets](link_to_dataset), which contains over 54,000 images of healthy and diseased plant leaves.
 <p align="center">
-  <img src="outputs/confusion_matrix.png" alt="PlantVision Banner">
+  <img src="outputs/confusion_matrix.png" alt="Confusion Matrix">
 </p>

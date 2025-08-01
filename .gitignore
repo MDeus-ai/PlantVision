@@ -3,7 +3,6 @@ __pycache__/
 /data/
 *.pth
 outputs/classification_report.txt
-outputs/confusion_matrix.png
 mlruns/
 *.pt
 *.onnx
