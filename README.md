@@ -139,6 +139,7 @@ Using CLI to interact with PlantVision requires you to open it from the terminal
     - In `data_config.yaml`: Modify `train_dir` and `val_dir` to match your dataset's structure e.g., `train_dir: "train"` or `train_dir: processed/train/`
     - In `model_config.yaml`: Modify `num_classes` to the number of classes in your dataset e.g., `num_classes: 38`
 - With these changes in place, you can now **train the system** with the following command:
+
     ```bash
     python -m PlantVision.train
     ```
@@ -151,4 +152,16 @@ Using CLI to interact with PlantVision requires you to open it from the terminal
 ### Other important CLI flags
 Some commands have more flags associated with them, that modify the way the system runs
 - `--verbose` or `-v`: Only used by the **predict** script, this flag enables PlantVision return more detailed predictions.
+
+
 - `--model-checkpoint`: Specific to the **evaluate** and **predict** script, this flag takes the path pointing to the trained model .pth file (defaults to `/outputs/best_model.pth`)
+
+**Note:** `python -m PlantVision.train` doesn't have any other flags associated with it
+
+---
+## 🛠️ Model Details
+- **Model Architecture:** EfficientNetB3, pre-trained on ImageNet and fine-tuned for this task.
+- **Dataset:** The model was trained on the [link to datasets](link_to_dataset), which contains over 54,000 images of healthy and diseased plant leaves.
+<p align="center">
+  <img src="outputs/confusion_matrix.png" alt="PlantVision Banner">
+</p>
