@@ -1,4 +1,3 @@
-# Fully Understood ☑️
 from unittest.mock import patch, MagicMock
 from PlantVision import evaluate
 from src import paths

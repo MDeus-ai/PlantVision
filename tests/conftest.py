@@ -1,4 +1,3 @@
-# Fully understood ☑️
 import pytest
 import yaml
 import torch

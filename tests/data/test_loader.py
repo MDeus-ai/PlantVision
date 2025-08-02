@@ -1,4 +1,3 @@
-# Fully Understood ☑️
 import torch
 from PlantVision.data.loader import get_dataloader
 from PlantVision.data.transforms import get_transforms
