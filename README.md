@@ -5,8 +5,7 @@
 <h1 align="center">Disease Detection</h1>
 
 <p align="center">
-  <strong>Identify plant diseases in a snap with state-of-the-art AI.</strong><br/>
-  An EfficientNet model fine-tuned to recognize plant diseases from leaf images, available via a web API and an offline-first mobile app.
+  <strong>An EfficientNet model fine-tuned to recognize plant diseases from leaf images, available via a web API and an offline-first mobile app</strong><br/>
 </p>
 
 <!-- BADGES: Go to shields.io to create these. They make your project look professional. -->
