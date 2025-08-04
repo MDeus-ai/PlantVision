@@ -9,6 +9,15 @@ setup(
     description='An end-to-end deep learning system for detecting '
                 'and classifying different kinds of plant diseases '
                 'based on their leaves ',
+    python_requires='>=3.8',
+
+    entry_points={
+        'console_scripts': [
+            'plantvision-train = PlantVision.train:main',
+            'plantvision-evaluate = PlantVision.evaluate:main',
+            'plantvision-predict = PlantVision.predict:main',
+        ]
+    },
 
     license='MIT',
 )
