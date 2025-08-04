@@ -36,15 +36,15 @@ By leveraging a highly efficient deep learning model, it provides an instant and
 helping to secure food resources and support sustainable agriculture.
 
 ## 📑 Table of Contents
-| Section              | Link                                             |
-|----------------------|--------------------------------------------------|
-| ✨ Features           | [Jump to Features](#-features)                   |
-| 💡 Tech Stack        | [Jump to Tech Stack](#-tech-stack)               |
-| 🚀 Installation      | [Jump to Installation](#-installation)           |
-| ⚙️ Usage             | [Jump to Usage](#-usage)                         |
-| 🛠️ Model Details    | [Jump to Model Details](#-model-details)         |
-| 📄 License           | [Jump to License](#-license)                     |
-| 📬 Contact           | [Jump to Contact](#-contact)                     |
+| Section           | Link                                     |
+|-------------------|------------------------------------------|
+| ✨ Features        | [Jump to Features](#-features)           |
+| 💡 Tech-Stack     | [Jump to Tech Stack](#-tech-stack)       |
+| 🚀 Installation   | [Jump to Installation](#-installation)   |
+| ⚙️ Usage          | [Jump to Usage](#-usage)                 |
+| 🛠️ Model-Details | [Jump to Model Details](#-model-details) |
+| 📄 License        | [Jump to License](#-license)             |
+| 📬 Contact        | [Jump to Contact](#-contact)             |
 
 ---
 
