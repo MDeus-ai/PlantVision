@@ -20,9 +20,9 @@ def test_training_pipeline_runs_without_crashing(monkeypatch, dummy_evaluation_p
     project_root = dummy_evaluation_project["project_root"]
 
    # Change directories to fake directories
-    monkeypatch.setattr('src.paths.PROJECT_ROOT', project_root)
-    monkeypatch.setattr('src.paths.CONFIG_DIR', project_root / 'configs')
-    monkeypatch.setattr('src.paths.DATA_DIR', project_root / 'data')
+    monkeypatch.setattr('PlantVision.paths.PROJECT_ROOT', project_root)
+    monkeypatch.setattr('PlantVision.paths.CONFIG_DIR', project_root / 'configs')
+    monkeypatch.setattr('PlantVision.paths.DATA_DIR', project_root / 'data')
 
 
 
