@@ -35,20 +35,7 @@ expert knowledge which isn't always accessible.
 By leveraging a highly efficient deep learning model, it provides an instant and accurate diagnosis from a single image of a plant leaf, 
 helping to secure food resources and support sustainable agriculture.
 
-## 📑 Table of Contents
-| Section           | Link                                     |
-|-------------------|------------------------------------------|
-| ✨ Features        | [Jump to Features](#-features)           |
-| 💡 Tech-Stack     | [Jump to Tech Stack](#-tech-stack)       |
-| 🚀 Installation   | [Jump to Installation](#-installation)   |
-| ⚙️ Usage          | [Jump to Usage](#-usage)                 |
-| 🛠️ Model-Details | [Jump to Model Details](#-model-details) |
-| 📄 License        | [Jump to License](#-license)             |
-| 📬 Contact        | [Jump to Contact](#-contact)             |
-
----
-
-## Features
+## ✨ Features
 
 - **State-of-the-art Backbone:** Utilizes EfficientNet-B3 for robust feature extraction.
 - **Offline Inference:** Optimized for deployment on mobile devices without internet connectivity.
@@ -57,7 +44,7 @@ helping to secure food resources and support sustainable agriculture.
 
 ---
 
-## Tech Stack
+## 💡 Tech Stack
 | Component         | Technology                                                                                                                                                                                                                       |
 | ----------------- |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **Model**         | <img src="https://img.shields.io/badge/PyTorch-EE4C2C?logo=pytorch&logoColor=white&style=flat-square"/> <img src="https://img.shields.io/badge/EfficientNet-B3-009688?style=flat-square)"/>                                       |
@@ -68,7 +55,7 @@ helping to secure food resources and support sustainable agriculture.
 
 ---
 
-## Installation
+## 🚀 Installation
 
 Follow these instructions to get the API running on your local machine.
 
@@ -108,7 +95,7 @@ Follow these instructions to get the API running on your local machine.
    plantvision-predict --image "path/to/image.png"
    ```
 ---
-## Usage
+## ⚙️ Usage
 ### Command-Line (CLI) Usage
 Using CLI to interact with PlantVision requires you to open it from the terminal e.g. `command prompt` for windows machines
 #### 1. **Use the system to make a prediction:**
@@ -156,7 +143,7 @@ Some commands have more flags associated with them, that modify the way the syst
 **Note:** `python -m PlantVision.train` doesn't have any other flags associated with it
 
 ---
-## Model Details
+## 🛠️ Model Details
 - **Model Architecture:** EfficientNetB3, pre-trained on ImageNet and fine-tuned for this task.
 - **Dataset:** The model was trained on the [link to datasets](link_to_dataset), which contains over 54,000 images of healthy and diseased plant leaves.
 <p align="center">
@@ -164,7 +151,7 @@ Some commands have more flags associated with them, that modify the way the syst
 </p>
 
 ---
-## License
+## 📄 License
 
 >MIT License
 
@@ -188,7 +175,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.)
 
-## Contact
+## 📬 Contact
 
 - **For Direct Inquiries**: You can reach the maintainer, Muhumuza Deus.M. at [muhumuzadeus7@gmail.com](mailto:muhumuzadeus7@gmail.com).
 
