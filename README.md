@@ -57,7 +57,7 @@ helping to secure food resources and support sustainable agriculture.
 
 ---
 
-## ⚙️ Tech Stack
+## ⚙️ Tech-Stack
 | Component         | Technology                                                                                                                                                                                                                       |
 | ----------------- |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | **Model**         | <img src="https://img.shields.io/badge/PyTorch-EE4C2C?logo=pytorch&logoColor=white&style=flat-square"/> <img src="https://img.shields.io/badge/EfficientNet-B3-009688?style=flat-square)"/>                                       |
@@ -156,7 +156,7 @@ Some commands have more flags associated with them, that modify the way the syst
 **Note:** `python -m PlantVision.train` doesn't have any other flags associated with it
 
 ---
-## 🛠️ Model Details
+## 🛠️ Model-Details
 - **Model Architecture:** EfficientNetB3, pre-trained on ImageNet and fine-tuned for this task.
 - **Dataset:** The model was trained on the [link to datasets](link_to_dataset), which contains over 54,000 images of healthy and diseased plant leaves.
 <p align="center">
