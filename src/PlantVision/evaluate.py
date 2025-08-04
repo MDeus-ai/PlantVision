@@ -9,7 +9,7 @@ from sklearn.metrics import classification_report, confusion_matrix
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-from src import paths
+from PlantVision import paths
 from PlantVision.data.loader import get_dataloader
 from PlantVision.data.transforms import get_transforms
 
@@ -187,7 +187,7 @@ def evaluate(model_checkpoint: Path, data_path: Path):
     print("\n"*3 + "Evaluation Finished." + "\n"*3)
 
 
-if __name__ == "__main__":
+def main():
     # CLI functionality of the evaluate.py script
     parser = argparse.ArgumentParser(description='Evaluate a trained PlantVision model')
 
@@ -220,3 +220,6 @@ if __name__ == "__main__":
         model_checkpoint=model_path,
         data_path=data_path,
     )
+
+if __name__ == "__main__":
+    main()

@@ -5,7 +5,7 @@ import argparse
 from pathlib import Path
 from PIL import Image
 
-from src import paths
+from PlantVision import paths
 from PlantVision.data.transforms import get_transforms
 
 # To use predict to make inference on an image anywhere on the computer:
@@ -130,7 +130,7 @@ def predict(model_checkpoint: Path, image_path: Path, verbose: bool = False):
     else:
         print("\n"*3 + "\t"*5 + "Model Exited." + "\n"*3)
 
-if __name__ == "__main__":
+def main():
     # CLI functionality of the predict.py script
     parser = argparse.ArgumentParser(description="Run inference on a single image with a trained PlantVision model.")
 
@@ -156,10 +156,12 @@ if __name__ == "__main__":
     # Construct absolute paths using our reliable paths.py module
     model_path = paths.PROJECT_ROOT / args.model_checkpoint
     image_path = Path(args.image).resolve()  # Use resolve for user-provided paths
-    data_config_path = paths.PROJECT_ROOT / args.data_config_path
 
     predict(
         model_checkpoint=model_path,
         image_path=image_path,
         verbose=args.verbose,
     )
+
+if __name__ == "__main__":
+    main()

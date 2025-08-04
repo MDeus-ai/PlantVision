@@ -6,7 +6,7 @@ import mlflow.pytorch
 import torch.nn as nn
 import torchvision.datasets as datasets
 
-from src import paths
+from PlantVision import paths
 from PlantVision.data.transforms import get_transforms
 from PlantVision.data.loader import get_dataloader
 from PlantVision.models.efficientnet.EfficientNet import EfficientNet
