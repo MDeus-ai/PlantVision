@@ -38,13 +38,11 @@ helping to secure food resources and support sustainable agriculture.
 ## 📑 Table of Contents
 | Section              | Link                                             |
 |----------------------|--------------------------------------------------|
-| ✨ Features           | [Jump to Features](#-features)                   
-| 💡 Tech Stack        | [Jump to Tech Stack](#-Tech-Stack)               
-| 🚀 Installation      | [Jump to Installation](#️-installation)          |
-| ⚙️ Usage             | [Jump to Usage](#-Usage)                         
-| 🛠️ Model Details    | [Jump to Model Details](#-dataset)               |
-| 📱 Mobile Deployment | [Jump to Mobile Deployment](#-mobile-deployment) |
-| 🤝 Contributing      | [Jump to Contributing](#-contributing)           |
+| ✨ Features           | [Jump to Features](#-features)                   |
+| 💡 Tech Stack        | [Jump to Tech Stack](#-tech-stack)               |
+| 🚀 Installation      | [Jump to Installation](#-installation)           |
+| ⚙️ Usage             | [Jump to Usage](#-usage)                         |
+| 🛠️ Model Details    | [Jump to Model Details](#-model-details)         |
 | 📄 License           | [Jump to License](#-license)                     |
 | 📬 Contact           | [Jump to Contact](#-contact)                     |
 
@@ -62,7 +60,7 @@ helping to secure food resources and support sustainable agriculture.
 ## ⚙️ Tech Stack
 | Component         | Technology                                                                                                                                                                                                                       |
 | ----------------- |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Model**         | <img src="https://img.shields.io/badge/PyTorch-EE4C2C?logo=pytorch&logoColor=white&style=flat-square"/> <img src="https://img.shields.io/badge/EfficientNet-B3-009688?style=flat-square)">                                       |
+| **Model**         | <img src="https://img.shields.io/badge/PyTorch-EE4C2C?logo=pytorch&logoColor=white&style=flat-square"/> <img src="https://img.shields.io/badge/EfficientNet-B3-009688?style=flat-square)"/>                                       |
 | **Backend (API)** | <img src="https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white&style=flat-square"/> <img src="https://img.shields.io/badge/Python-3.9-3776AB?logo=python&logoColor=white&style=flat-square"/>                |
 | **Mobile**        | <img src="https://img.shields.io/badge/Flutter-02569B?logo=flutter&logoColor=white&style=flat-square"/> |
 
@@ -107,7 +105,7 @@ Follow these instructions to get the API running on your local machine.
     ```
 5. **Use the model from the terminal:**
     ```bash
-   python -m PlantVision.predict --image "path/to/image.png"
+   plantvision-predict --image "path/to/image.png"
    ```
 ---
 ## ⚙️ Usage
@@ -116,7 +114,7 @@ Using CLI to interact with PlantVision requires you to open it from the terminal
 #### 1. **Use the system to make a prediction:**
 - You can use the model to make predictions on images anywhere on your computer by running the following command 
     ```bash
-    python -m PlantVision.predict --image "path/to/image.png"
+    plantvision-predict --image "path/to/image.png"
     ```
 #### 2. **Train the model:**
 - Training the model requires you to adapt the system to your custom dataset. This is be done by moving your dataset to the `data/` folder in the **project root** (create the folder if its not available)
@@ -140,13 +138,13 @@ Using CLI to interact with PlantVision requires you to open it from the terminal
 - With these changes in place, you can now **train the system** with the following command:
 
     ```bash
-    python -m PlantVision.train
+    plantvision-train
     ```
 - PlantVision will automatically register the class names in your dataset in `outputs/num_classes.json` file for `predict.py` and `evaluate.py` to use later
 #### 3. **Evaluate the model:**
 - Evaluate the model by running the following command: 
     ```bash
-    python -m PlantVision.evaluate
+    plantvision-evaluate
     ```
 ### Other important CLI flags
 Some commands have more flags associated with them, that modify the way the system runs
@@ -164,3 +162,36 @@ Some commands have more flags associated with them, that modify the way the syst
 <p align="center">
   <img src="outputs/confusion_matrix.png" alt="Confusion Matrix">
 </p>
+
+---
+## 📄 License
+
+>MIT License
+
+Copyright (c) 2025 Muhumuza Deus.M.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.)
+
+## 📬 Contact
+
+- **For Direct Inquiries**: You can reach the maintainer, Muhumuza Deus.M. at [muhumuzadeus7@gmail.com](mailto:muhumuzadeus7@gmail.com).
+
+Connect with the creator on social media:
+- **Twitter**: [@Muhumuzadeus5](https://x.com/Muhumuzadeus5)
+- **LinkedIn**: [linkedin.com/in/MuhumuzaDeusMugenyi](https://www.linkedin.com/in/muhumuza-deus-mugenyi-81a4a7268/)
