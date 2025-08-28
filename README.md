@@ -19,7 +19,7 @@
 
 **🌿PlantVision** is a deeplearning-powered plant disease detection system built
 with Python and PyTorch. It leverages a CNN architecture (EfficientNet) to classify 84 
-different kinds of plant diseases from 17 plants with a relatively high accuracy.
+different kinds of plant diseases from 17 plant species with a relatively high accuracy.
 
 
 📚You can find the full project documentation [here](https://muhumuzadeus.netlify.app/projects/plantvision-cv001dd)
@@ -147,12 +147,33 @@ Some commands have more flags associated with them, that modify the way the syst
 ## 🛠️ Model Details
 - **Model Architecture** The system uses a family of EfficientNet models introduced in the paper, [EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks](https://arxiv.org/abs/1905.11946), 
 pre-trained on ImageNet and fine-tuned for this task.
-
-- **Dataset:** The model was trained on the [link to datasets](link_to_dataset), which contains over 54,000 images of healthy and diseased plant leaves.
 <p align="center">
   <img src="outputs/confusion_matrix.png" alt="Confusion Matrix">
 </p>
 
+- **Dataset:** The model was trained on a bunch of datasets from different sources, making it over 178,456 images of healthy and diseased plant leaves.
+- Supported plant species include;
+        
+  ```
+  1. Apple 
+  2. Banana 
+  3. Beans 
+  4. Cassava 
+  5. Cherry
+  6. Corn 
+  7. Cucumber 
+  8. Eggplant 
+  9. Grape 
+  10. Lemon 
+  11. Mango 
+  12. Orange 
+  13. Peach 
+  14. Pepper 
+  15. Potato 
+  16. Tomato
+  17. Watermelon
+  ````
+    >  ****Note:**** The datasets used for training this model are closed-source and not publicly available.
 ---
 ## 📄 License
 
