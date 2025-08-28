@@ -7,7 +7,7 @@ data:
   batch_size: 32
 
   # Image size to be fed into the model
-  img_size: 24
+  img_size: 5
 
   # Shuffle the training images during training
   shuffle: true
