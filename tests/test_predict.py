@@ -31,7 +31,7 @@ def test_predict_handles_nonexistent_image(capsys):
     # ASSERT
     # 'capsys' is a pytest fixture that captures printed output to stdout/stderr.
     captured = capsys.readouterr()
-    assert "Error: Image file not found" in captured.out
+    assert "❌ Error: No image file found at" in captured.out
 
 
 def test_predict_runs_successfully(monkeypatch, dummy_evaluation_project):

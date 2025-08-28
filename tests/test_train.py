@@ -26,8 +26,8 @@ def test_training_pipeline_runs_without_crashing(monkeypatch, dummy_evaluation_p
 
 
 
-    # mock the `mlflow.pytorch.log_model` function to do nothing, literally😅
-    with patch('mlflow.pytorch.log_model') as mock_log_model:
+    # mock the `mlflow.log_artifacts` function to do nothing, literally😅
+    with patch('mlflow.log_artifacts') as mock_log_artifacts:
 
         # ACT & ASSERT
         try:
@@ -37,4 +37,4 @@ def test_training_pipeline_runs_without_crashing(monkeypatch, dummy_evaluation_p
             pytest.fail(f"The training pipeline failed with an exception: {e}")
 
     # Confirm that model logging function was called
-    mock_log_model.assert_called_once()
+    mock_log_artifacts.assert_called_once()

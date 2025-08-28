@@ -1,30 +1,26 @@
 import json
 import torch
-import yaml
 import argparse
-from pathlib import Path
 from PIL import Image
+from pathlib import Path
 
 from PlantVision import paths
+from PlantVision.utils import load_config
 from PlantVision.data.transforms import get_transforms
+from PlantVision.models.efficientnet.EfficientNet import EfficientNet
 
 # To use predict to make inference on an image anywhere on the computer:
 #   0. Open the PlantVision project from the terminal
 #   1. Activate PlantVision project environment by running: venv\Scripts\activate
-#   2. Command to make a prediction: python -m PlantVision.predict --image "path/to/image.png" --model-checkpoint "/outputs/best_model.pth"
+#   2. Command to make a prediction: plantvision-predict --image "path/to/image.png" --model-checkpoint "outputs/best_model.pth"
 
 # Flags:
 #   --image: Path to any image on the computer
-#   --model-checkpoint : Path to the trained model .pth file (defaults to /outputs/best_model.pth)
+#   --model-checkpoint : Path to the trained model .pth file (defaults to outputs/best_model.pth)
 #   --verbose or -v : Print out more details about the model's predictions.
 
 # For more check out the documentation https://github.com/MDeus-ai/PlantVision
 
-
-
-def load_config(config_path):
-    with open(config_path, 'r') as f:
-        return yaml.safe_load(f)
 
 def predict(model_checkpoint: Path, image_path: Path, verbose: bool = False):
     """
@@ -38,7 +34,7 @@ def predict(model_checkpoint: Path, image_path: Path, verbose: bool = False):
     """
 
     if not image_path.is_file():
-        print("\n" + "\t"*5 + f"❌ Error: Image file not found at {image_path}")
+        print("\n" + "\t"*5 + f"❌ Error: No image file found at {image_path}")
         return
 
     # Draw a box around the PlantVision Prediction word
@@ -79,9 +75,17 @@ def predict(model_checkpoint: Path, image_path: Path, verbose: bool = False):
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print("\n" + "\t"*5 + f"💡 Using device: {device}")
 
-    # 2. Load Model
+    # 2. Load model weights
     print("\n" + "\t"*5 + f"🔁 Loading model checkpoint...")
-    model = torch.load(model_checkpoint, map_location=device, weights_only=False)
+    model = EfficientNet(
+        num_classes=model_num_classes,
+        model_name=model_config["model_variation"],
+        pretrained=False
+    )
+    # Load model weights
+    state_dict = torch.load(model_checkpoint, map_location=device)
+    # Load the weights into the model instance
+    model.load_state_dict(state_dict)
     model.to(device)
     model.eval() # Set model to evaluation mode
 
@@ -109,7 +113,7 @@ def predict(model_checkpoint: Path, image_path: Path, verbose: bool = False):
     confidence = top_prob.item()
 
     # 6. Display Results
-    print("\n" + "\t"*5 + "="*30)
+    print("\n" + "\t"*5 + "="*43)
     print("\n" + "\t"*5 + f"🌿 Prediction: {predicted_class}")
     if verbose:
         print("\n" + "\t"*5 + f"🔢 Confidence: {confidence:.4f} ({confidence:.4%})")

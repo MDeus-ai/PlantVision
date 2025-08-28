@@ -1,17 +1,19 @@
-import torch
-import yaml
 import tqdm
-import argparse
 import json
-from pathlib import Path
+import torch
+import mlflow
+import argparse
 import pandas as pd
-from sklearn.metrics import classification_report, confusion_matrix
 import seaborn as sns
+from pathlib import Path
 import matplotlib.pyplot as plt
+from sklearn.metrics import classification_report, confusion_matrix
 
 from PlantVision import paths
+from PlantVision.utils import load_config
 from PlantVision.data.loader import get_dataloader
 from PlantVision.data.transforms import get_transforms
+from PlantVision.models.efficientnet.EfficientNet import EfficientNet
 
 # To run the evaluate.py script:
 #   0. Open the PlantVision project from the terminal
@@ -25,13 +27,7 @@ from PlantVision.data.transforms import get_transforms
 # For more check out the documentation https://github.com/MDeus-ai/PlantVision
 
 
-# A helper function to open and read config files
-def load_config(config_path):
-    with open(config_path, 'r') as f:
-        return yaml.safe_load(f)
-
-
-def evaluate(model_checkpoint: Path, data_path: Path):
+def evaluate(model_checkpoint: Path, data_path: Path, run_id: str=None):
     """
     Evaluates a trained model checkpoint on a given dataset
 
@@ -45,6 +41,7 @@ def evaluate(model_checkpoint: Path, data_path: Path):
     Args:
         model_checkpoint (Path): Path to the saved .pth model checkpoint
         data_path (Path): Path to the validation/test data directory
+        run_id (str, optional): The MLflow Run ID to log metrics to.
     """
     print("\n"*3 + " Starting Evaluation...\n")
 
@@ -95,9 +92,18 @@ def evaluate(model_checkpoint: Path, data_path: Path):
         drop_last=False,
     )
 
-    # 3. Load the model & state dictionary (weights)
+    # 3. Load the model, configs & state dictionary (weights)
+    model_config = load_config(paths.CONFIG_DIR / "model_config.yaml")["model"]
     print(f"🔁 Loading model checkpoint from: {model_checkpoint}")
-    model = torch.load(model_checkpoint, map_location=device, weights_only=False)
+    model = EfficientNet(
+        num_classes=model_num_classes,
+        model_name=model_config["model_variation"],
+        pretrained=False,
+    )
+    # Load model weights
+    state_dict = torch.load(model_checkpoint, map_location=device)
+    # Load the weights into the model instance
+    model.load_state_dict(state_dict)
     model.to(device)
     model.eval() # Set to evaluation mode
 
@@ -148,9 +154,23 @@ def evaluate(model_checkpoint: Path, data_path: Path):
     print("\t"*7 + "└" + "─" * box_width + "┘")
 
     # Classification Report (Precision, Recall, F1-Score)
-    report = classification_report(all_labels, all_preds_top1, target_names=class_names, digits=4, zero_division=0)
+    report_dict = classification_report(
+        all_labels,
+        all_preds_top1,
+        target_names=class_names,
+        digits=4,
+        zero_division=0,
+        output_dict=True
+    )
+    report_text = classification_report(
+        all_labels,
+        all_preds_top1,
+        target_names=class_names,
+        digits=4,
+        zero_division=0,
+    )
     print("\n\n" + "\t"*7 + " Classification Report (Top-1):\n")
-    print(report)
+    print(report_text)
 
     # Display Top-1, Top-2 and Top-5 Accuracies
     print("\t"*5 + "="*51)
@@ -162,7 +182,7 @@ def evaluate(model_checkpoint: Path, data_path: Path):
     report_path = paths.PROJECT_ROOT / "outputs" / "classification_report.txt"
     report_path.parent.mkdir(exist_ok=True)
     with open(report_path, 'w') as f:
-        f.write(report)
+        f.write(report_text)
         f.write(f"Top-1 Accuracy: {top1_accuracy:.2f}%\n")
         f.write(f"Top-2 Accuracy: {top2_accuracy:.2f}%\n")
         f.write(f"Top-5 Accuracy: {top5_accuracy:.2f}%\n")
@@ -186,11 +206,33 @@ def evaluate(model_checkpoint: Path, data_path: Path):
     print(f" Confusion matrix plot saved to {cm_path}")
     print("\n"*3 + "Evaluation Finished." + "\n"*3)
 
+    if run_id:
+        print(f"\n 🔄️ Logging evaluation results to MLflow Run ID: {run_id}")
+        with mlflow.start_run(run_id=run_id):
+            # Log summary metrics
+            mlflow.log_metric("eval_accuracy", report_dict["accuracy"])
+            mlflow.log_metric("eval_macro_avg_precision", report_dict["macro avg"]["precision"])
+            mlflow.log_metric("eval_macro_avg_recall", report_dict["macro avg"]["recall"])
+            mlflow.log_metric("eval_macro_avg_f1-scroe", report_dict["macro avg"]["f1-score"])
+
+            # Log the output files as artifacts
+            mlflow.log_artifact(str(report_path), "evaluation_reports")
+            mlflow.log_artifact(str(cm_path), "evaluation_report")
+
+            mlflow.set_tag("status", "evaluated")
+
+
 
 def main():
     # CLI functionality of the evaluate.py script
     parser = argparse.ArgumentParser(description='Evaluate a trained PlantVision model')
 
+    parser.add_argument(
+        "--run_id",
+        type=str,
+        default=None,
+        help="The MLflow Run ID of the training run to log evaluation results to."
+    )
     parser.add_argument(
         "--model-checkpoint",
         type=str,
@@ -219,6 +261,7 @@ def main():
     evaluate(
         model_checkpoint=model_path,
         data_path=data_path,
+        run_id=args.run_id,
     )
 
 if __name__ == "__main__":
