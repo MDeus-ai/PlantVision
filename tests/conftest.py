@@ -76,7 +76,7 @@ def dummy_evaluation_project(tmp_path_factory):
         freeze_layers=False
     )
     model_path = outputs_dir / "best_model.pth"
-    torch.save(model, model_path) # Save model state
+    torch.save(model.state_dict(), model_path) # Save model state
 
     # Create a fake class_names.json
     class_names_path = outputs_dir / "class_names.json"
