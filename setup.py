@@ -16,6 +16,7 @@ setup(
             'plantvision-train = PlantVision.train:main',
             'plantvision-evaluate = PlantVision.evaluate:main',
             'plantvision-predict = PlantVision.predict:main',
+            'plantvision-export = PlantVision.export:main',
         ]
     },
 
