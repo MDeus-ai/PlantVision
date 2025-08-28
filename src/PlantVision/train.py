@@ -1,25 +1,23 @@
-import yaml
 import json
 import tqdm
 import torch
+import yaml
+import shutil
 import mlflow.pytorch
 import torch.nn as nn
+from pathlib import Path
 import torchvision.datasets as datasets
 
 from PlantVision import paths
-from PlantVision.data.transforms import get_transforms
+from PlantVision.utils import load_config
 from PlantVision.data.loader import get_dataloader
+from PlantVision.data.transforms import get_transforms
 from PlantVision.models.efficientnet.EfficientNet import EfficientNet
 
 # To run the train.py script:
 #   0. Open the project from the terminal
 #   1. Activate PlantVision project environment by running: venv\Scripts\activate
 #   2. Run the following command: python -m PlantVision.train
-
-def load_config(config_path):
-    """A single, reusable function to load any YAML config."""
-    with open(config_path, "r") as f:
-        return yaml.safe_load(f)
 
 
 def main():
@@ -132,18 +130,57 @@ def main():
             print(f"Epoch {epoch + 1} - Avg Training Loss: {epoch_loss:.4f}")
             mlflow.log_metric('train_loss', epoch_loss, step=epoch)
 
-        # A sample for the model signature
+        print('\n ☑️ Training finished. Saving artifacts...')
+
+        # 1. Save the best model state_dict locally for direct access
+        output_dir = paths.PROJECT_ROOT / 'outputs'
+        output_dir.mkdir(parents=True, exist_ok=True)
+        best_model_path = output_dir / 'best_model.pth'
+        torch.save(model.state_dict(), best_model_path)
+        print(f" ✅ Model state_dict saved locally to: {best_model_path}")
+
+        # 2. Manually create an MLflow Model package
+        print("Logging complete model package to MLflow...")
+
+        # Define a path within the current run's artifact location
+        # This will create a temporary local directory that gets uploaded automatically
+        mlflow_model_path = "mlflow_model"
+
+        # a. Save the state_dict inside the package's data subfolder
+        model_data_path = Path(mlflow_model_path) / "data"
+        model_data_path.mkdir(parents=True, exist_ok=True)
+        torch.save(model.state_dict(), model_data_path / "model.pth")
+
+        # b. Get a model signature
         input_example, _ = next(iter(train_loader))
-        numpy_input_example = input_example.cpu().numpy()
+        signature = mlflow.models.infer_signature(input_example.cpu().numpy())
 
-        print('\n ☑️ Training finished. Logging model to MLflow...')
-        mlflow.pytorch.log_model(
-            pytorch_model=model,
-            artifact_path='model',
-            input_example=numpy_input_example,
-        )
-        print(f'\n ✅ Successfully logged model to MLflow Run ID: {run.info.run_id}')
+        # c. Manually create the MLmodel metadata file
+        mlflow_model_metadata = {
+            "artifact_path": "model",  # The name when loaded via mlflow.pytorch.load_model
+            "flavors": {
+                "pytorch": {
+                    "model_data": "data",
+                    "pytorch_version": torch.__version__,
+                    "model_state_dict": "model.pth"
+                }
+            },
+            "signature": signature.to_dict()
+        }
 
+        with open(Path(mlflow_model_path) / "MLmodel", "w") as f:
+            yaml.dump(mlflow_model_metadata, f)
+
+        # d. Log the requirements file with the model
+        shutil.copyfile("requirements.txt", Path(mlflow_model_path) / "requirements.txt")
+
+        # 3. Log the entire manually created directory as an artifact
+        mlflow.log_artifacts(local_dir=mlflow_model_path, artifact_path="model")
+
+        print(f'✅ Successfully logged model package to MLflow Run ID: {run.info.run_id}')
+
+        # Clean up the temporary local directory
+        shutil.rmtree(mlflow_model_path)
 
 if __name__ == '__main__':
     main()
