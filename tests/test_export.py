@@ -1,6 +1,7 @@
 import pytest
 import yaml
 from unittest.mock import patch
+from plantvision import paths
 
 from plantvision.export import main as export_main
 
@@ -41,6 +42,7 @@ def test_export_pipeline_runs_without_crashing(monkeypatch, dummy_evaluation_pro
     # Apply the patches
     monkeypatch.setattr('plantvision.utils.load_config', mock_load_config)
     monkeypatch.setattr('json.load', mock_json_load)
+    monkeypatch.setattr(paths, 'PROJECT_ROOT', project_root)
 
     # Mock command-line arguments that export_main's argparse will parse
     test_args = [
