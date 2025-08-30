@@ -14,7 +14,7 @@ from plantvision.models.efficientnet.EfficientNet import EfficientNet
 
 def export_model(model_checkpoint: Path, output_dir: Path, quantize: bool=False):
     """
-    Exports a trained Pytorch model to ONNX format and optionally qua   ntizes it
+    Exports a trained Pytorch model to ONNX format and optionally quantizes it
 
     Args:
     :param model_checkpoint: Path to the saved .pth model file:

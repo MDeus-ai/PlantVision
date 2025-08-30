@@ -31,7 +31,7 @@ def dummy_evaluation_project(tmp_path_factory):
     │            ├── 9.png
     │            └── 10.png
     ├── outputs/
-        ├── class_names.json
+    │   ├── class_names.json
     │   └── best_model.pth
     └── configs/
         ├── data_config.yaml
@@ -44,6 +44,7 @@ def dummy_evaluation_project(tmp_path_factory):
     base_dir = tmp_path_factory.mktemp("eval_project_root")
 
     # 1. Create fake data in an appropriate structure
+    data_dir_data = base_dir / "data"
     data_dir = base_dir / "data" / "val"
     data_dir.mkdir(parents=True)
     (data_dir / "class_a").mkdir()
@@ -131,9 +132,11 @@ def dummy_evaluation_project(tmp_path_factory):
 
     return {
         "project_root": base_dir,
+        "outputs_dir": outputs_dir,
         "model_path": model_path,
         "config_dir": config_dir,
         "data_path": data_dir,
+        "data_dir": data_dir_data,
         "data_config_path": data_config_path,
         "model_config_path": model_config_path,
         "train_config_path": train_config_path,
