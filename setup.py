@@ -1,7 +1,7 @@
 from setuptools import find_packages, setup
 
 setup(
-    name='PlantVision', # The name pip uses
+    name='plantvision', # The name pip uses
     version='1.0.0',
     packages=find_packages(where='src'),
     package_dir={'': 'src'}, # Tells setuptools that packages are under src

@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock  import patch
-from PlantVision.train import main as train_main
+from plantvision.train import main as train_main
 
 def test_training_pipeline_runs_without_crashing(monkeypatch, dummy_evaluation_project):
 
@@ -20,9 +20,9 @@ def test_training_pipeline_runs_without_crashing(monkeypatch, dummy_evaluation_p
     project_root = dummy_evaluation_project["project_root"]
 
    # Change directories to fake directories
-    monkeypatch.setattr('PlantVision.paths.PROJECT_ROOT', project_root)
-    monkeypatch.setattr('PlantVision.paths.CONFIG_DIR', project_root / 'configs')
-    monkeypatch.setattr('PlantVision.paths.DATA_DIR', project_root / 'data')
+    monkeypatch.setattr('plantvision.paths.PROJECT_ROOT', project_root)
+    monkeypatch.setattr('plantvision.paths.CONFIG_DIR', project_root / 'configs')
+    monkeypatch.setattr('plantvision.paths.DATA_DIR', project_root / 'data')
 
 
 

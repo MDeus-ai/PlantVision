@@ -4,7 +4,7 @@ import torch
 import json
 import numpy as np
 from PIL import Image
-from PlantVision.models.efficientnet.EfficientNet import EfficientNet
+from plantvision.models.efficientnet.EfficientNet import EfficientNet
 
 
 @pytest.fixture(scope="session")

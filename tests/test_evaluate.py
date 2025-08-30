@@ -1,5 +1,5 @@
 from unittest.mock import patch, MagicMock
-from PlantVision import evaluate, paths
+from plantvision import evaluate, paths
 
 
 def test_evaluate_script_runs_and_creates_outputs(monkeypatch, dummy_evaluation_project):

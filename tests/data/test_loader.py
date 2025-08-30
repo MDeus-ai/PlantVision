@@ -1,6 +1,6 @@
 import torch
-from PlantVision.data.loader import get_dataloader
-from PlantVision.data.transforms import get_transforms
+from plantvision.data.loader import get_dataloader
+from plantvision.data.transforms import get_transforms
 
 
 def test_get_dataloader(dummy_evaluation_project):

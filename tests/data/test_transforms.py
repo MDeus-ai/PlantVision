@@ -3,7 +3,7 @@ import torchvision
 import numpy as np
 from PIL import Image
 from torchvision import transforms
-from PlantVision.data.transforms import get_transforms
+from plantvision.data.transforms import get_transforms
 
 def test_get_transforms_output_type():
     """Tests if the get_transforms function returns the correct object type"""

@@ -1,7 +1,7 @@
 import torch
 import pytest
 from unittest.mock import patch
-from PlantVision.models.efficientnet.EfficientNet import EfficientNet
+from plantvision.models.efficientnet.EfficientNet import EfficientNet
 
 
 def test_efficientnet_instantiation_from_scratch():

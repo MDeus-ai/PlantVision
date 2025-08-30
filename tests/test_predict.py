@@ -4,7 +4,7 @@ from PIL import Image
 from unittest.mock import patch
 from pathlib import Path
 
-from PlantVision import predict, paths
+from plantvision import predict, paths
 
 
 # Reuse the 'dummy_evaluation_project' fixture from conftest.py
