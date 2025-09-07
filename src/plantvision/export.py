@@ -62,7 +62,7 @@ def export_model(model_checkpoint: Path, output_dir: Path, quantize: bool=False)
         args=(dummy_input,),
         f=onnx_fp32_path,
         export_params=True,
-        opset_version=11,
+        opset_version=13,
         do_constant_folding=True,
         input_names=["input"],
         output_names=["output"],
@@ -115,8 +115,8 @@ def export_model(model_checkpoint: Path, output_dir: Path, quantize: bool=False)
             calibration_data_reader=calibration_data_reader,
             quant_format='QDQ',
             per_channel=True,
-            weight_type=QuantType.QUInt8,
-            activation_type=QuantType.QUInt8,
+            weight_type=QuantType.QInt8,
+            activation_type=QuantType.QInt8,
         )
         print("☑️ INT8 Static Quantization complete!")
         print(f"\n Original FP32 size: {onnx_fp32_path.stat().st_size / 1e6:.2f} MB")
