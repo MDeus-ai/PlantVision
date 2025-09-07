@@ -10,7 +10,7 @@ class EfficientNet(nn.Module):
     def __init__(self, num_classes: int, model_name: str = 'b0', pretrained: bool = False, freeze_layers: bool = False):
         super(EfficientNet, self).__init__()
 
-        print(f"🔄️ Initializing EfficientNet-{model_name}")
+        print(f".")
 
         # Map our model_name string to the correct torchvision model and weights enum
         model_mapping = {
@@ -28,10 +28,10 @@ class EfficientNet(nn.Module):
 
         # Load the model with pre-trained weights or from scratch
         if pretrained:
-            print(f"🔁 Loading pre-trained weights: {weights_enum.name}")
+            print(f"..")
             self.base_model = model_builder(weights=weights_enum)
         else:
-            print("🚀 Initializing model from scratch")
+            print("...")
             self.base_model = model_builder(weights=None, num_classes=num_classes)
 
         # Adapt the classifier for a custom number of classes
