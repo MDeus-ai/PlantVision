@@ -1,10 +1,10 @@
 from setuptools import find_packages, setup
 
 setup(
-    name='plantvision', # The name pip uses
-    version='1.0.0',
+    name='plantvision',
+    version='2.0.0',
     packages=find_packages(where='src'),
-    package_dir={'': 'src'}, # Tells setuptools that packages are under src
+    package_dir={'': 'src'},
     author='Muhumuza Deus.M.',
     description='An end-to-end deep learning system for detecting '
                 'and classifying different kinds of plant diseases '
@@ -13,10 +13,11 @@ setup(
 
     entry_points={
         'console_scripts': [
-            'plantvision-train = PlantVision.train:main',
-            'plantvision-evaluate = PlantVision.evaluate:main',
-            'plantvision-predict = PlantVision.predict:main',
-            'plantvision-export = PlantVision.export:main',
+            'plantvision-train = plantvision.train:main',
+            'plantvision-evaluate = plantvision.evaluate:main',
+            'plantvision-predict = plantvision.predict:main',
+            'plantvision-export = plantvision.export:main',
+            'plantvision-benchmark = plantvision.benchmark:main'
         ]
     },
 
